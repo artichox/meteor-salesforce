@@ -58,7 +58,7 @@ Salesforce.findAndExecute = function(type, conditions, fields, options, sort) {
 
   execute(function(error, records) {
     if (error) {
-      future.return(error);
+      future.return(null);
     } else {
       future.return(records);
     }
