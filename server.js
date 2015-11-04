@@ -6,7 +6,8 @@ connection = new jsforce.Connection();
 Salesforce = connection; // export as
 Salesforce._login = Meteor.wrapAsync(connection.login, connection);
 Salesforce._query = Meteor.wrapAsync(connection.query, connection);
-
+Salesforce._authorize = Meteor.wrapAsync(connection.authorize, connection);
+Salesforce._create = Meteor.wrapAsync(connection.create, connection);
 
 /**
  * Wraps async login method to sync
@@ -16,16 +17,53 @@ Salesforce._query = Meteor.wrapAsync(connection.query, connection);
  * @returns {*}
  */
 
-Salesforce.login = function (u, p, t) {
-    var future = new Future();
-    console.log('[SF] connecting..');
-    var self = this;
-    self._login(u, p + t, function (err, res) {
-        if (err) return future.throw(err);
-        console.log('[SF] connected!');
-        future.return(res);
-    })
-    return future.wait();
+Salesforce.login = function(username, password, securityToken) {
+  var future = new Future();
+  var self = this;
+  self._login(username, password + securityToken, function(error, response) {
+    if (error) {
+      future.return(null);
+    } else {
+      future.return(response);
+    }
+  });
+  return future.wait();
+};
+
+/* Don't need this quite yet...we don't want this to block the client.
+Salesforce.create = function(type, records, options) {
+  var future = new Future();
+  var self = this;
+
+  self._create(type, records, options, function(error, response) {
+    if (error) {
+      future.return(error);
+    } else {
+      future.return(response);
+    }
+  });
+  return future.wait();
+};*/
+
+Salesforce.findAndExecute = function(type, conditions, fields, options, sort) {
+  var future = new Future();
+  var self = this;
+
+  var query = Salesforce.sobject(type).find(conditions, fields, options);
+  if (sort) {
+    query = query.sort(sort);
+  }
+
+  var execute = Meteor.wrapAsync(query.execute, query);
+
+  execute(function(error, records) {
+    if (error) {
+      future.return(error);
+    } else {
+      future.return(records);
+    }
+  });
+  return future.wait();
 };
 
 /**
@@ -33,12 +71,27 @@ Salesforce.login = function (u, p, t) {
  * @param query String
  * @returns {*}
  */
-Salesforce.query = function (query) {
-    var future = new Future();
-    console.log('[SF] query:', query);
-    this._query(query, function (err, res) {
-        if (err) return future.throw(err);
-        future.return(res);
-    })
-    return future.wait();
+Salesforce.query = function(query) {
+  var future = new Future();
+  this._query(query, function(error, response) {
+    if (error) {
+      future.return(null);
+    } else {
+      future.return(response);
+    }
+  });
+  return future.wait();
+};
+
+Salesforce.authorize = function(code) {
+  var future = new Future();
+  var self = this;
+  self._authorize(code, function(error, response) {
+    if (error) {
+      future.return(null);
+    } else {
+      future.return(response);
+    }
+  });
+  return future.wait();
 };
