@@ -18,3 +18,6 @@ Two methods `login` and `query` are wrapped server-side in Fibers to work synchr
     var result = Salesforce.query(query);
 
 
+    var results = Salesforce.findAndExecute('Contact',{Email: {$in: ['billybob@bobmail.com']}}, 'Id, Email, AccountId');
+
+    var userInfo = Salesforce.authorize('<some_code_from_oauth2_flow>');
