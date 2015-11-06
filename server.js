@@ -21,11 +21,7 @@ Salesforce.login = function(username, password, securityToken) {
   var future = new Future();
   var self = this;
   self._login(username, password + securityToken, function(error, response) {
-    if (error) {
-      future.return(null);
-    } else {
-      future.return(response);
-    }
+    future.return({error: error, response: response});
   });
   return future.wait();
 };
@@ -56,12 +52,8 @@ Salesforce.findAndExecute = function(type, conditions, fields, options, sort) {
 
   var execute = Meteor.wrapAsync(query.execute, query);
 
-  execute(function(error, records) {
-    if (error) {
-      future.return(null);
-    } else {
-      future.return(records);
-    }
+  execute(function(error, response) {
+     future.return({error: error, response: response});
   });
   return future.wait();
 };
@@ -74,11 +66,7 @@ Salesforce.findAndExecute = function(type, conditions, fields, options, sort) {
 Salesforce.query = function(query) {
   var future = new Future();
   this._query(query, function(error, response) {
-    if (error) {
-      future.return(null);
-    } else {
-      future.return(response);
-    }
+    future.return({error: error, response: response});
   });
   return future.wait();
 };
@@ -87,11 +75,7 @@ Salesforce.authorize = function(code) {
   var future = new Future();
   var self = this;
   self._authorize(code, function(error, response) {
-    if (error) {
-      future.return(null);
-    } else {
-      future.return(response);
-    }
+     future.return({error: error, response: response});
   });
   return future.wait();
 };
