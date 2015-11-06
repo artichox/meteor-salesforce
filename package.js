@@ -1,6 +1,6 @@
 Package.describe({
   name: 'tuul:salesforce',
-  version: '1.4.2',
+  version: '1.4.3',
   summary: 'Salesforce for Meteor (via JSforce)',
   git: 'https://github.com/tuulbox/meteor-salesforce',
   documentation: 'README.md'
