@@ -1,7 +1,7 @@
 jsforce = Npm.require('jsforce');
 Future = Npm.require('fibers/future');
 
-connection = new jsforce.Connection();
+connection = new jsforce.Connection({ loginUrl: Meteor.settings.SF_LOGIN_URL} );
 
 Salesforce = connection; // export as
 Salesforce._login = Meteor.wrapAsync(connection.login, connection);

@@ -1,8 +1,8 @@
 Package.describe({
-  name: 'tuul:salesforce',
+  name: 'tuul:salesforce-manually-modified',
   version: '1.4.4',
-  summary: 'Salesforce for Meteor (via JSforce)',
-  git: 'https://github.com/tuulbox/meteor-salesforce',
+  summary: 'Salesforce for Meteor (via JSforce) - modified by artichox',
+  git: 'https://github.com/artichox/meteor-salesforce',
   documentation: 'README.md'
 });
 

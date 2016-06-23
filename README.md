@@ -1,3 +1,7 @@
+
+# ( modifications )
+Defining SF_LOGIN_URL in settings.json allows the user to login to https://test.salesforce.com or https://login.salesforce.com as desired ( allowing for testing using sandboxes ).
+
 # Salesforce for Meteor (via JSforce)
 
 This package is a slim wrapper for the awesome JSforce npm package.
